@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/sliceContacts/sliceContacts';
 
 import { Form, Label, InputContact } from './FormContacts.styled';
 
-export default function FormContacts({ onSubmit, listContacts }) {
+export default function FormContacts() {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [number, setNumver] = useState('');
 
@@ -25,7 +29,8 @@ export default function FormContacts({ onSubmit, listContacts }) {
   };
 
   const handlSubmit = () => {
-    onSubmit(name, number);
+    console.log(name, number);
+    dispatch(addContact(name, number));
     setName('');
     setNumver('');
   };
@@ -35,7 +40,7 @@ export default function FormContacts({ onSubmit, listContacts }) {
 
     const normalizedFilter = name.toLocaleLowerCase();
 
-    const checkName = listContacts.some(
+    const checkName = contacts.some(
       contact => contact.name.toLocaleLowerCase() === normalizedFilter
     );
 
@@ -72,8 +77,3 @@ export default function FormContacts({ onSubmit, listContacts }) {
     </Form>
   );
 }
-// }
-
-FormContacts.propTypes = {
-  listContacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
-};

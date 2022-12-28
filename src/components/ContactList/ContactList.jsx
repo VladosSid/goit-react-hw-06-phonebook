@@ -1,13 +1,21 @@
-import { ContactsList } from './ContactList.styled';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/sliceContacts/sliceContacts';
 
-const ContactList = ({ listContacts, deleteContact }) => {
+import { ContactsList } from './ContactList.styled';
+
+const ContactList = () => {
+  const contacts = useSelector(state => state.contacts);
+  const dispatch = useDispatch();
+
   return (
     <ContactsList>
-      {listContacts.map(contact => (
+      {contacts.map(contact => (
         <li key={contact.id}>
           {contact.name}: {contact.number}
-          <button type="button" onClick={() => deleteContact(contact.id)}>
+          <button
+            type="button"
+            onClick={() => dispatch(deleteContact(contact.id))}
+          >
             Delete
           </button>
         </li>
@@ -16,7 +24,3 @@ const ContactList = ({ listContacts, deleteContact }) => {
   );
 };
 export default ContactList;
-
-ContactList.prototype = {
-  listContacts: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
-};
