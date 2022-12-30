@@ -1,13 +1,24 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { contactReducer } from './sliceContacts/sliceContacts';
 import { filterReducer } from './sliceFilter/sliceFilter';
 
-const store = configureStore({
+const persistConfig = {
+  key: 'contacts',
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, contactReducer);
+
+export const store = configureStore({
   reducer: {
-    contacts: contactReducer,
+    contacts: persistedReducer,
     filter: filterReducer,
   },
 });
 
-export default store;
+export const persistor = persistStore(store);

@@ -40,7 +40,7 @@ export default function FormContacts() {
 
     const normalizedFilter = name.toLocaleLowerCase();
 
-    const checkName = contacts.some(
+    const checkName = contacts.contacts.some(
       contact => contact.name.toLocaleLowerCase() === normalizedFilter
     );
 
